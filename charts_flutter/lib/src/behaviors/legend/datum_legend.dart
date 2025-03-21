@@ -287,7 +287,7 @@ int get hashCode {
     secondaryMeasureFormatter,
     entryTextStyle,
   );
-}
+}}
 
 /// Flutter specific wrapper on the common Legend for building content.
 class _FlutterDatumLegend<D> extends common.DatumLegend<D>
