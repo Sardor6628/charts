@@ -1,21 +1,6 @@
-// Copyright 2018 the Charts project authors. Please see the AUTHORS file
-// for details.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 import 'package:charts_common/common.dart' as common
     show Legend, LegendState, SeriesLegend;
-import 'package:flutter/widgets.dart' show BuildContext, hashValues, Widget;
+import 'package:flutter/widgets.dart' show BuildContext, Widget;
 import 'legend.dart';
 import 'legend_entry_layout.dart';
 import 'legend_layout.dart';
@@ -35,7 +20,7 @@ abstract class LegendContentBuilder {
 /// for each legend entry. These widgets are then passed to a
 /// [LegendEntryLayout] strategy to create the legend widget.
 abstract class BaseLegendContentBuilder implements LegendContentBuilder {
-  /// Strategy for creating one widget or each legend entry.
+  /// Strategy for creating one widget for each legend entry.
   LegendEntryLayout get legendEntryLayout;
 
   /// Strategy for creating the legend content widget from a list of widgets.
@@ -54,31 +39,28 @@ abstract class BaseLegendContentBuilder implements LegendContentBuilder {
       }
 
       return legendEntryLayout.build(
-          context, entry, legend as TappableLegend, isHidden,
-          showMeasures: showMeasures);
+        context,
+        entry,
+        legend as TappableLegend,
+        isHidden,
+        showMeasures: showMeasures,
+      );
     }).toList();
 
     return legendLayout.build(context, entryWidgets);
   }
 }
 
-// TODO: Expose settings for tabular layout.
 /// Strategy that builds a tabular legend.
-///
-/// [legendEntryLayout] custom strategy for creating widgets for each legend
-/// entry.
-/// [legendLayout] custom strategy for creating legend widget from list of
-/// widgets that represent a legend entry.
 class TabularLegendContentBuilder extends BaseLegendContentBuilder {
   final LegendEntryLayout legendEntryLayout;
   final LegendLayout legendLayout;
 
-  TabularLegendContentBuilder(
-      {LegendEntryLayout? legendEntryLayout, LegendLayout? legendLayout})
-      : this.legendEntryLayout =
-            legendEntryLayout ?? const SimpleLegendEntryLayout(),
-        this.legendLayout =
-            legendLayout ?? new TabularLegendLayout.horizontalFirst();
+  TabularLegendContentBuilder({
+    LegendEntryLayout? legendEntryLayout,
+    LegendLayout? legendLayout,
+  })  : legendEntryLayout = legendEntryLayout ?? const SimpleLegendEntryLayout(),
+        legendLayout = legendLayout ?? TabularLegendLayout.horizontalFirst();
 
   @override
   bool operator ==(Object o) {
@@ -88,5 +70,5 @@ class TabularLegendContentBuilder extends BaseLegendContentBuilder {
   }
 
   @override
-  int get hashCode => hashValues(legendEntryLayout, legendLayout);
+  int get hashCode => Object.hash(legendEntryLayout, legendLayout);
 }

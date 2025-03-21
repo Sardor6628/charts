@@ -101,9 +101,8 @@ class TabularLegendLayout implements LegendLayout {
       cellPadding == o.cellPadding;
 
   @override
-  int get hashCode => hashValues(
+  int get hashCode => Object.hash(
       desiredMaxRows, desiredMaxColumns, isHorizontalFirst, cellPadding);
-
   Widget _buildHorizontalFirst(List<Widget> legendEntries) {
     final maxColumns = (desiredMaxColumns == _noLimit)
         ? legendEntries.length
